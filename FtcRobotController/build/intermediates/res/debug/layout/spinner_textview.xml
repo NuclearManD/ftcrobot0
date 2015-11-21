@@ -38,4 +38,4 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:padding="10dp"
-          android:textSize="30sp" /><!-- From: file:/C:/Users/buric_000/AndroidStudioProjects/ftc_app-master/FtcRobotController/src/main/res/layout/spinner_textview.xml -->
+          android:textSize="30sp" /><!-- From: file:/C:/Users/buric_000/AndroidStudioProjects/ftcrobot0/FtcRobotController/src/main/res/layout/spinner_textview.xml -->

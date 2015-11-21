@@ -37,4 +37,4 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" android:showAsAction="never" />
 </menu>
-<!-- From: file:/C:/Users/buric_000/AndroidStudioProjects/ftc_app-master/FtcRobotController/src/main/res/menu/menu_load.xml -->
+<!-- From: file:/C:/Users/buric_000/AndroidStudioProjects/ftcrobot0/FtcRobotController/src/main/res/menu/menu_load.xml -->
