@@ -1,6 +1,7 @@
 package com.qualcomm.ftcrobotcontroller.opmodes.drivers;
 import com.qualcomm.ftcrobotcontroller.opmodes.MainOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DeviceInterfaceModule;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -28,10 +29,14 @@ public class MovementDriver {
     public MainOpMode.teams team;
     public void init(HardwareMap hardwareMap, OrientationPoint loc){
         fl = hardwareMap.dcMotor.get("fl");
+        fl.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         fr = hardwareMap.dcMotor.get("fr");
+        fr.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         fr.setDirection(DcMotor.Direction.REVERSE);
         bl = hardwareMap.dcMotor.get("bl");
+        bl.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         br = hardwareMap.dcMotor.get("br");
+        br.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         br.setDirection(DcMotor.Direction.REVERSE);
         csensor=hardwareMap.colorSensor.get("color");
         cdim = hardwareMap.deviceInterfaceModule.get("dim");
