@@ -10,12 +10,12 @@ import com.qualcomm.robotcore.hardware.DigitalChannelController;
  * Created by buric_000 on 11/6/2015.
  */
 public class MovementDriver {
-    DcMotor fl;
-    DcMotor fr;
-    DcMotor bl;
-    DcMotor br;
-    ColorSensor csensor;
-    DeviceInterfaceModule cdim;
+    public DcMotor fl;
+    public DcMotor fr;
+    public DcMotor bl;
+    public DcMotor br;
+    //ColorSensor csensor;
+    //DeviceInterfaceModule cdim;
     public OrientationPoint target;
     private OrientationPoint location;
     private float speed=0;
@@ -26,23 +26,25 @@ public class MovementDriver {
     float fpms=0;
     float dpms=0;
     public boolean reachedTarget=false;
-    public MainOpMode.teams team;
-    public void init(HardwareMap hardwareMap, OrientationPoint loc){
+    boolean um=false;
+    //public MainOpMode.teams team;
+    public void init(HardwareMap hardwareMap, OrientationPoint loc,boolean useMath){
         fl = hardwareMap.dcMotor.get("fl");
-        fl.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //fl.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         fr = hardwareMap.dcMotor.get("fr");
-        fr.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //fr.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         fr.setDirection(DcMotor.Direction.REVERSE);
         bl = hardwareMap.dcMotor.get("bl");
-        bl.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //bl.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         br = hardwareMap.dcMotor.get("br");
-        br.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        //br.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         br.setDirection(DcMotor.Direction.REVERSE);
-        csensor=hardwareMap.colorSensor.get("color");
-        cdim = hardwareMap.deviceInterfaceModule.get("dim");
-        cdim.setDigitalChannelMode(5, DigitalChannelController.Mode.OUTPUT);
+        //csensor=hardwareMap.colorSensor.get("color");
+        //cdim = hardwareMap.deviceInterfaceModule.get("dim");
+        //cdim.setDigitalChannelMode(5, DigitalChannelController.Mode.OUTPUT);
         target=loc;
         lstime=System.currentTimeMillis();
+        um =useMath;
     }
     public boolean update() {
         reachedTarget = false;
@@ -50,14 +52,14 @@ public class MovementDriver {
         if (!knowsLocation) {
             if (!started) {
                 setSpeed(0.4f);
-                if (csensor.red() > 200) {
-                    team = MainOpMode.teams.RED;
+                /*if (csensor.red() > 200) {
+                    //team = MainOpMode.teams.RED;
                     started = true;
                 } else if (csensor.blue() > 200) {
-                    team = MainOpMode.teams.BLUE;
+                   // team = MainOpMode.teams.BLUE;
                     started = true;
                 } else
-                    return false;
+                    return false;*/
                 setSpeed(0);
                 location.x -= 5;
                 location.y = location.x;
@@ -84,6 +86,8 @@ public class MovementDriver {
         return true;
     }
     private void calculatePosition(){
+        if(!um)
+            return;
         long time=System.currentTimeMillis()-lstime;
         lstime=System.currentTimeMillis();
         float distanceMoved=time*speed*fpms;
@@ -91,22 +95,24 @@ public class MovementDriver {
         location.y+=distanceMoved*Math.cos(location.rotation);
         location.rotation+=rotspeed*dpms;
     }
-    private void setSpeed(float s){
+    public void setSpeed(float s){
         calculatePosition();
-        fl.setPower(s);
-        fr.setPower(s);
-        bl.setPower(s);
-        br.setPower(s);
+        float r=(s-rotspeed)/2;
+        float l=(rotspeed+s)/2;
+        fl.setPower(l);
+        fr.setPower(r);
+        bl.setPower(l);
+        br.setPower(r);
         speed=s;
-        rotspeed=0;
     }
-    private void setRotspeed(float s){
+    public void setRotspeed(float s){
         calculatePosition();
-        fl.setPower(s);
-        fr.setPower(-s);
-        bl.setPower(s);
-        br.setPower(-s);
-        speed=0;
+        float r=(speed-s)/2;
+        float l=(speed+s)/2;
+        fl.setPower(l);
+        fr.setPower(r);
+        bl.setPower(l);
+        br.setPower(r);
         rotspeed=s;
     }
     private float torad(float x){
