@@ -107,7 +107,7 @@ public class MainOpMode extends LinearOpMode {
         //telemetry.addData("stage:","done with program");
     }
     void moveArm(float value){
-        armdown0.setPower(-value);
+        armdown0.setPower(value);
         armdown1.setPower(-value);
         armup.setPower(value);
 
