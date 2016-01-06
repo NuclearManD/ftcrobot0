@@ -51,65 +51,51 @@ public class MainOpMode extends LinearOpMode {
         }catch (Exception e){
             e.printStackTrace();
         }
-        dropper.setPosition(1);
-        flapleft.setPosition(0);
+        dropper.setPosition(0.1);
+        flapleft.setPosition(0.25);
         flapright.setPosition(0.7);
         hardwareMap.servo.get("lock").setPosition(0.4);
         telemetry.addData("stage:", "done loading");
-        /*long end=System.currentTimeMillis()+30000;
-        boolean t=true;
-        while(end<System.currentTimeMillis()){
-            if(drive.update()&&t){
-                drive.target=targets[1][drive.team.v];
-                arm.setPower(0.5);
-                long stoparm= (long) (System.currentTimeMillis()+(afps*2*0.5*1000));
-                while(stoparm>System.currentTimeMillis());
-                arm.setPower(0);
-                stoparm= (long) (System.currentTimeMillis()+500);
-                while(stoparm>System.currentTimeMillis());
-                dropper.setPosition(0);
-                arm.setPower(-0.5);
-                stoparm= (long) (System.currentTimeMillis()+(afps*2*0.5*1000));
-                while(stoparm>System.currentTimeMillis());
-                t=false;
-            }
-            if(drive.knowsLocation&&!t){
-                drive.target=targets[0][drive.team.v];
-            }
-        }*/
         try{
             //wait(30000);                   // wait for the end of autonomous mode.
         }catch(Exception e){
 
         }
         telemetry.addData("stage:","done waiting");
-            while (true) {
-                drive.setRotspeed(gamepad1.left_stick_x);
+        while (opModeIsActive()) {
+            drive.setRotspeed(gamepad1.left_stick_x);
 
-                drive.setSpeed(-gamepad1.right_stick_y);
+            drive.setSpeed(-gamepad1.right_stick_y);
 
-                //
-                // Manage the arm motor.
-                //
-                if (gamepad1.x) {
-                    dropper.setPosition(0.083);
-                }
-                if (gamepad1.dpad_down)
-                    moveArm(-1);
-                else if (gamepad1.dpad_up)
-                    moveArm(1);
-                else
-                    moveArm(0);
-                //if (gamepad1.right_trigger)
-                //    flapright.setPosition(0.5);
-
+            //
+            // Manage the arm motor.
+            //
+            if (gamepad2.x) {
+                dropper.setPosition(1);
             }
+            if (gamepad2.dpad_down)
+                moveArm0(-1);
+            else if (gamepad2.dpad_up)
+                moveArm0(1);
+            else
+                moveArm0(0);
+            if(gamepad2.right_bumper)//open
+                flapright.setPosition(0.7);
+            if(gamepad2.right_trigger>0.2)//close
+                flapright.setPosition(0.09);
+            if(gamepad2.left_bumper)//open
+                flapleft.setPosition(0.25);
+            if(gamepad2.left_trigger>0.2)//close
+                flapleft.setPosition(0.82);
+            //if (gamepad1.right_trigger)
+            //    flapright.setPosition(0.5);
+        }
         //telemetry.addData("stage:","done with program");
     }
-    void moveArm(float value){
-        armdown0.setPower(value);
-        armdown1.setPower(-value);
-        armup.setPower(value);
+    void moveArm0(float value){
+        float power=0.1f;
+        armdown0.setPower(value*power);
+        armdown1.setPower(-value*power);
 
     }
     float scalejoystick (float p_power)
